@@ -226,6 +226,52 @@ docker run -d -p 8501:8501 --name satelital --restart always satelital-app
 - ✅ Auto-deploy desde GitHub
 - ✅ SSL incluido
 
+**Pasos para desplegar en Render:**
+
+1. **Preparar el repositorio:**
+   - Asegúrate de que todos los archivos estén en GitHub
+   - El archivo `render.yaml` ya está incluido en el proyecto
+
+2. **Crear cuenta en Render:**
+   - Ve a https://render.com
+   - Regístrate o inicia sesión con GitHub
+
+3. **Crear nuevo Web Service:**
+   - En el dashboard, click en "New +" → "Web Service"
+   - Conecta tu repositorio de GitHub: `fuiyono/plataforma-monitoreo-satelital`
+   - O usa el archivo `render.yaml` para configuración automática:
+     - Click en "New +" → "Blueprint"
+     - Conecta el repositorio
+     - Render detectará automáticamente el `render.yaml`
+
+4. **Configuración manual (si no usas render.yaml):**
+   - **Name:** `plataforma-monitoreo-satelital`
+   - **Environment:** `Python 3`
+   - **Build Command:** `pip install -r requirements.txt`
+   - **Start Command:** `streamlit run app.py --server.port=$PORT --server.address=0.0.0.0 --server.headless=true`
+   - **Plan:** Free (o el plan que prefieras)
+
+5. **Variables de entorno (opcional):**
+   - Si necesitas una API key de NASA FIRMS, agrega:
+     - Key: `NASA_FIRMS_API_KEY`
+     - Value: `tu_api_key` (si la tienes)
+
+6. **Desplegar:**
+   - Click en "Create Web Service"
+   - Render comenzará a construir y desplegar tu aplicación
+   - El proceso toma 5-10 minutos la primera vez
+
+7. **Configurar dominio personalizado (opcional):**
+   - En Settings → Custom Domain
+   - Agrega: `satelital.geotecmatica.cloud`
+   - Configura el DNS según las instrucciones de Render
+
+**Notas importantes:**
+- El plan gratuito puede "dormir" después de 15 minutos de inactividad
+- La primera carga después de dormir puede tardar ~30 segundos
+- Para evitar el sleep, considera el plan Starter ($7/mes)
+- Render asigna automáticamente un puerto a través de `$PORT`
+
 ---
 
 ## Recomendación por Caso de Uso
